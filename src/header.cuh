@@ -47,5 +47,5 @@ void count_triangles(
 );
 
 int naive_counter(const Edge *edges);
-
+void initial_out(Count_t *out, size_t node_size); // out 배열 초기화
 #endif // _HEADER_CUH_
