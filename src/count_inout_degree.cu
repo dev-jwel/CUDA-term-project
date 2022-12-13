@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+/*
 __global__
 void findInOutDegree(vector<vector<int>> adjlist,
                      int n)
@@ -22,3 +23,4 @@ void findInOutDegree(vector<vector<int>> adjlist,
              << ouT[k] << endl;
     }
 }
+*/
