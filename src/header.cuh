@@ -1,6 +1,9 @@
 #ifndef _HEADER_CUH_
 #define _HEADER_CUH_
 
+#include <stdlib.h>
+#include <time.h>
+
 #ifndef BLOCK_SIZE
 #define BLOCK_SIZE 64
 #endif
@@ -46,6 +49,9 @@ void count_triangles(
 	NodeIdx *buffer
 );
 
-int naive_counter(const Edge *edges);
 void initial_out(Count_t *out, size_t node_size); // out 배열 초기화
+
+int naive_counter(const Edge *edges, size_t edge_size);
+
+
 #endif // _HEADER_CUH_
