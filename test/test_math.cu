@@ -16,11 +16,11 @@ int main() {
 	cudaMalloc((void **) &dev_test_2, sizeof(host_test_2));
 	cudaMalloc((void **) &dev_result, sizeof(host_result));
 
-	cudaMemcpy(dev_test_1, host_test_1, sizeof(host_test_1), cudaHostToDevice);
-	cudaMemcpy(dev_test_2, host_test_2, sizeof(host_test_2), cudaHostToDevice);
-	
+	cudaMemcpy(dev_test_1, host_test_1, sizeof(host_test_1), cudaMemcpyHostToDevice);
+	cudaMemcpy(dev_test_2, host_test_2, sizeof(host_test_2), cudaMemcpyHostToDevice);
+
 	acc_sum <<<1, BLOCK_SIZE>>> (dev_test_1, dev_result, 10);
-	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaDeviceToHost);
+	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaMemcpyDeviceToHost);
 	for (i=0; i<10; ++i) {
 		if (host_result[i] != host_acc_sum[i]) {
 			printf("error on accsum\n");
@@ -29,20 +29,20 @@ int main() {
 		}
 	}
 
-	mul <<<1, BLOCK_SIZE>>> (dev_test_1, dev_test_2, dev_result, 10);
-	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaDeviceToHost);
+	element_mul <<<1, BLOCK_SIZE>>> (dev_test_1, dev_test_2, dev_result, 10);
+	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaMemcpyDeviceToHost);
 	for (i=0; i<10; ++i) {
 		if (host_result[i] != host_mul[i]) {
-			printf("error on mul\n");
+			printf("error on element_mul\n");
 			ret = 1;
 			break;
 		}
 	}
 
 	sum <<<1, BLOCK_SIZE>>> (dev_test_1, dev_result, 10);
-	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaDeviceToHost);
+	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaMemcpyDeviceToHost);
 	if (dev_result[0] != 55) {
-		printf("error on accsum\n");
+		printf("error on sum\n");
 		ret = 1;
 	}
 

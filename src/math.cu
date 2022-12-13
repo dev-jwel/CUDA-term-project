@@ -39,9 +39,9 @@ void sum(const Count_t *in, Count_t *out, size_t node_size) {
 		while (buffer_size > 1) {
 			if (tid < buffer_size/2) {
 				out[tid] += out[2*tid + buffer_size%2];
-				buffer_size += buffer_size % 2;
-				buffer_size /= 2;
 			}
+			buffer_size += buffer_size % 2;
+			buffer_size /= 2;
 		}
 	}
 }
