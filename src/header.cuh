@@ -16,12 +16,7 @@ typedef struct {
 	NodeIdx to;
 } Edge;
 
-__global__
-void sort_by_dest(const Edge *in, Edge *out, size_t edge_size);
-<<<<<<< HEAD
-__global__
-void stable_sort_by_source(const Edge *in, Edge *out, size_t edge_size);
-=======
+
 /**
  * 이 함수는 주어진 간선리스트 in을 src 기준으로 out에 정렬한다.
  * out은 in과 같은 크기로 할당되어야 하나, 초기화될 필요는 없다.
@@ -33,7 +28,6 @@ void stable_sort_by_source(const Edge *in, Edge *out, size_t edge_size);
  * 이 함수는 주어진 간선리스트 in을 dest 기준으로 out에 정렬한다.
  * out은 in과 같은 크기로 할당되어야 하나, 초기화될 필요는 없다.
  */
->>>>>>> e62aabc (Add comments for function prototypes)
 
 __global__
 void count_in_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node_size);
@@ -117,12 +111,9 @@ void count_triangles(
  * counter는 각 스레드가 센 삼각형의 개수를 기록하며, 이 커널이 실행된 순간의 스레드 수와 길이가 같아야 한다.
  */
 
-void initial_out(Count_t *out, size_t node_size); // out 배열 초기화
-
 int naive_counter(const Edge *edges, size_t edge_size);
 /**
  * 이 함수는 무식하게 CPU만으로 삼각형의 개수를 센다.
  */
-
 
 #endif // _HEADER_CUH_
