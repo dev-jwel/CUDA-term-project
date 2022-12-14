@@ -17,9 +17,9 @@ typedef struct {
 } Edge;
 
 __global__
-void sort_by_dest(const Edge *edge, size_t edge_size);
+void sort_by_dest(const Edge *in, Edge out, size_t edge_size);
 __global__
-void stable_sort_by_source(const Edge *edge, size_t edge_size);
+void stable_sort_by_source(const Edge *in, Edge out, size_t edge_size);
 
 __global__
 void count_in_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node_size);
@@ -49,9 +49,6 @@ void count_triangles(
 	NodeIdx *buffer
 );
 
-void initial_out(Count_t *out, size_t node_size); // out 배열 초기화
-
 int naive_counter(const Edge *edges, size_t edge_size);
-
 
 #endif // _HEADER_CUH_
