@@ -16,7 +16,7 @@ NodeIdx start_node_of_tid(
 	while (max - min > 1) {
 		mid = (min + max) / 2;
 		if (accumulated_num_candidates_by_node[mid] > target) {
-			max = mid
+			max = mid;
 		} else {
 			min = mid;
 		}
@@ -41,7 +41,7 @@ NodeIdx end_node_of_tid(
 	while (max - min > 1) {
 		mid = (min + max) / 2;
 		if (accumulated_num_candidates_by_node[mid] < target) {
-			min = mid
+			min = mid;
 		} else {
 			max = mid;
 		}
