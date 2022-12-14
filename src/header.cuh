@@ -75,21 +75,31 @@ void sum(const Count_t *in, Count_t *out, size_t node_size);
  */
 
 __inline__ __device__
-NodeIdx start_node_of_tid(const Count_t *accumulated_num_candidates_by_node, size_t tid);
+NodeIdx start_node_of_tid(
+	const Count_t *accumulated_num_candidates_by_node,
+	size_t node_size,
+	size_t tid,
+	size_t num_threads
+);
 /**
  * 이 함수는 노드마다 삼각형의 후보군의 수(들어오는 차수와 나가는 차수의 곱)의 누적합을 입력으로 받는다.
  * 주어진 tid에 대응되는 시작 노드를 찾는다.
  */
 
 __inline__ __device__
-NodeIdx end_node_of_tid(const Count_t *accumulated_num_candidates_by_node, size_t tid);
+NodeIdx end_node_of_tid(
+	const Count_t *accumulated_num_candidates_by_node,
+	size_t node_size,
+	size_t tid,
+	size_t num_threads
+);
 /**
  * 이 함수는 노드마다 삼각형의 후보군의 수(들어오는 차수와 나가는 차수의 곱)의 누적합을 입력으로 받는다.
  * 주어진 tid에 대응되는 마지막 노드를 찾는다.
  */
 
 __inline__ __device__
-bool has_pair(const Edge *fully_sorted_edge, Edge edge);
+bool has_pair(const Edge *fully_sorted_edge, Edge edge, size_t edge_size);
 /**
  * 이 함수는 주어진 간선이 정렬된 간선리스트에 존재하는지 확인한다.
  */
