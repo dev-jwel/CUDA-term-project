@@ -27,22 +27,23 @@ int main(int argc, char *argv[]) {
 	cudaMalloc((void**)&dev_c_in_out, sizeof(Count_t)*node_size);
 	cudaMalloc((void**)&dev_c_out_out, sizeof(Count_t)*node_size);
 
-	dim3 grid(grid_size, block_size);
+	dim3 Dg(grid_size, 1, 1);
+	dim3 Db(block_size, 1, 1)
 	for(int i=0; i<edge_size; i++) {
-		sort_by_dest<<<grid_size, 1>>>(dev_in, dev_out, edge_size);
+		sort_by_dest<<<Dg, Db>>>(dev_in, dev_out, edge_size);
 	}
 	cudaMemcpy(&out, dev_out, sizeof(Edge)*edge_size, cudaMemcpyDeviceToHost); // dst에 대해 정렬된 값 src로
 
 	for(int j=0; j<edge_size; j++) {
-		stable_sort_by_source<<<grid_size, 1>>>(dev_out, dev_out2, edge_size);
+		stable_sort_by_source<<<Dg, Db>>>(dev_out, dev_out2, edge_size);
 	}
 
 	cudaMemcpy(&out2, dev_out2, sizeof(Edge)*edge_size, cudaMemcpyDeviceToHost); // src에 대해 정렬된 값 host로
 
 	initial_out(&cout, node_size); // cout 초기화 과정
 
-	count_in_degree<<<grid_size, 1>>>(dev_out, dev_c_in_out, edge_size, node_size);
-	count_out_degree<<<grid_size, 1>>>(dev_out2, dev_c_out_out, edge_size, node_size);
+	count_in_degree<<Dg, Db>>>(dev_out, dev_c_in_out, edge_size, node_size);
+	count_out_degree<<<Dg, Db>>>(dev_out2, dev_c_out_out, edge_size, node_size);
 
 	cudaMemcpy(&c_in_out, dev_c_in_out, sizeof(Count_t)*node_size, cudaMemcpyDeviceToHost); // dst 기준으로 정렬된 outgoing 차수 device에서 host로
 	cudaMemcpy(&c_out_out, dev_c_out_out, sizeof(Count_t)*node_size, cudaMemcpyDeviceToHost); // src 기준으로 정렬된 incoming 차수 device에서 host로
