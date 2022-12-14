@@ -2,12 +2,12 @@
 #include <math.h>
 #include "header.cuh"
 
-#define edge_size 100 // Edge 개수
+#define edge_size 512 // Edge 개수
 
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 	printf("hello\n");
-	int block_size, edge_size, grid_size, node_size;
+	double block_size, edge_size, grid_size, node_size;
 	struct Edge *dev_in;
 	struct Edge *dev_out;
 	struct Edge *dev_out2;
