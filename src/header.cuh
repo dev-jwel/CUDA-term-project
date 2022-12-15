@@ -16,6 +16,11 @@ typedef struct {
 	NodeIdx to;
 } Edge;
 
+Edge *load_bitcoin_otc();
+/**
+ * 이 함수는 그래프 데이터를 메모리로 읽어들인다.
+ */
+
 __host__
 void sort_by_dest(const Edge *in, Edge *out, Edge *buffer, size_t edge_size);
 /**
