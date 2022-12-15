@@ -1,8 +1,10 @@
 #include "def.cuh"
+#include <stdio.h>
 
-__device__ size_t binary_search(
+__device__
+size_t binary_search(
 	const void *array,
-	int (*compare) (const void *val1, const void *val2),
+	int (*compare) (const void *, const void *),
 	size_t element_size,
 	size_t array_size,
 	const void *target,
@@ -54,9 +56,9 @@ int compare_edge(const void *edge1, const void *edge2) {
 
 __device__
 int compare_count(const void *cnt1, const void *cnt2) {
-	if (cnt1 < cnt2) {
+	if (*((size_t *) cnt1) < *((size_t *) cnt2)) {
 		return -1;
-	} else if (cnt1 > cnt2) {
+	} else if (*((size_t *) cnt1) > *((size_t *) cnt2)) {
 		return 1;
 	} else {
 		return 0;
