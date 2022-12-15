@@ -70,7 +70,7 @@ void element_mul(const Count_t *in1, const Count_t *in2, Count_t *out, size_t no
  */
 
 __global__
-void sum(const Count_t *in, Count_t *out, size_t node_size);
+void reduce_sum(const Count_t *in, Count_t *out, size_t node_size);
 /**
  * 이 함수는 in의 모든 원소의 합은 out[0]에 기록한다.
  * 병렬화를 위하여 out은 in과 동일한 크기일 필요가 있다.

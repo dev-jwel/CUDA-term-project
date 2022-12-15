@@ -1,19 +1,33 @@
 headers = $(wildcard src/*.cuh)
-sources = $(wildcard src/*.cu)
-objects = $(patsubst src/%.cu, bin/%.o, $(sources))
+objects = $(patsubst src/%.cu, build/%.o, $(wildcard src/*.cu))
+tests = $(patsubst test/%.cu, build/test/%.o, $(wildcard test/*.cu))
 
-all: bin bin/main
+all: bin/main
+
+bin/main: bin build $(objects)
+	nvcc -g -G -o bin/main $(objects)
+
+test: bin bin/main build/test $(tests)
+	nvcc -g -G -o bin/test $(filter-out build/main.o, $(objects)) $(tests)
 
 bin:
 	mkdir -p bin
 
-bin/main: bin $(objects)
-	nvcc -g -G -o bin/main $(objects)
+build:
+	mkdir -p build
 
-bin/%.o: src/%.cu
+build/test:
+	mkdir -p build/test
+
+build/%.o: src/%.cu
 	nvcc -g -G -dc -c -o $@ $<
+
+build/test/%.o: test/%.cu
+	nvcc -g -G -dc -c -I src -o $@ $<
 
 src/%.cu: $(headers)
 
+test/%.cu: $(headers)
+
 clean:
-	rm -f bin/*
+	rm -rf bin build
