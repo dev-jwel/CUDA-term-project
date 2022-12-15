@@ -1,24 +1,53 @@
 #include "header.cuh"
 #include <bits/stdc++.h>
+#include <vector>
+#include <iostream>
 
 using namespace std;
 
-// 그래프 개수(일단 예시로)
-#define V 4
+size_t naive_counter(const vector<Edge> edges) {
+    vector<vector<size_t>> adj_list;
 
-void multiply(int A[][V], int B[][V], int C[][V])
-{
-	for (int i = 0; i < V; i++)
-	{
-		for (int j = 0; j < V; j++)
-		{
-			C[i][j] = 0;
-			for (int k = 0; k < V; k++)
-				C[i][j] += A[i][k]*B[k][j];
-		}
-	}
-}
+    // assumes maximum index of node is number of nodes
+    size_t num_node = 0;
+    for (auto &edge : edges) {
+        if (edge.from > num_node) {
+            num_node = edge.from;
+        }
+        if (edge.to > num_node) {
+            num_node = edge.to;
+        }
+    }
+    num_node += 1;
 
-int naive_counter(const Edge *edges) {
-	// TODO
+    for (size_t i=0; i<num_node; i++) {
+        adj_list.push_back(vector<size_t>());
+    }
+
+    for (auto &edge : edges) {
+        adj_list[edge.from].push_back(edge.to);
+    }
+
+    size_t count = 0;
+    for (size_t i=0; i<num_node; i++) {
+        for (size_t _j=0; _j<adj_list[i].size(); _j++) {
+            size_t j = adj_list[i][_j];
+            for (size_t _k=0; _k<adj_list[j].size(); _k++) {
+                size_t k = adj_list[j][_k];
+                if (i == k) {
+                    continue;
+                }
+
+                for (size_t _l=0; _l < adj_list[i].size(); _l++) {
+                    size_t l = adj_list[i][_l];
+                    if (l == k) {
+                        count++;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    return count;
 }

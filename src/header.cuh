@@ -153,7 +153,8 @@ void count_triangles(
  * counter는 각 스레드가 센 삼각형의 개수를 기록하며, 이 커널이 실행된 순간의 스레드 수와 길이가 같아야 한다.
  */
 
-int naive_counter(const Edge *edges, size_t edge_size);
+__host__
+size_t naive_counter(const std::vector<Edge> edges);
 /**
  * 이 함수는 무식하게 CPU만으로 삼각형의 개수를 센다.
  */
