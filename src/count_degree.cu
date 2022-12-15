@@ -24,7 +24,6 @@ void _count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node
     }
 }
 
-
 __host__
 void count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
 	_count_in_degree <<<GRID_DIM(node_size), BLOCK_DIM>>> (in, out, edge_size, node_size);
@@ -32,7 +31,6 @@ void count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_
 
 __global__
 void _count_out_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
-
 	size_t node_idx = blockIdx.x * blockDim.x + threadIdx.x;
 
     if (node_idx >= node_size) {

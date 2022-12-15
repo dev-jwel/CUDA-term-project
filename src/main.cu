@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 
@@ -54,16 +53,8 @@ int main(int argc, char *argv[]) {
 	cudaMemcpy(host_result_out_degree, dev_result_degree, sizeof(host_result_out_degree), cudaMemcpyDeviceToHost);
 	//위에까지 count_degree 함수
 
-	
-
-	
-
-
-
 	cout << "max_node_idx: " << max_node_idx << ", num_edge: " << edge_list.size() << endl;
     cout << "count: " << naive_counter(edge_list) << endl;
-
-
 
 	return 0;
 }
