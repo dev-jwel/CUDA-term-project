@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 #ifndef BLOCK_SIZE
 #define BLOCK_SIZE 64
@@ -16,7 +17,7 @@ typedef struct {
 	NodeIdx to;
 } Edge;
 
-Edge *load_bitcoin_otc();
+vector<Edge> load_bitcoin_otc();
 /**
  * 이 함수는 그래프 데이터를 메모리로 읽어들인다.
  */
