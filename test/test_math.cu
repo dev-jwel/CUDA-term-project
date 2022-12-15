@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "header.cuh"
 
-int main() {
+int test_math() {
 	int i, ret = 0;
 
 	Count_t host_test_1[10] = {1,2,3,4,5,6,7,8,9,10};
@@ -19,31 +19,31 @@ int main() {
 	cudaMemcpy(dev_test_1, host_test_1, sizeof(host_test_1), cudaMemcpyHostToDevice);
 	cudaMemcpy(dev_test_2, host_test_2, sizeof(host_test_2), cudaMemcpyHostToDevice);
 
-	acc_sum <<<1, BLOCK_SIZE>>> (dev_test_1, dev_result, 10);
+	acc_sum <<<1, BLOCK_DIM>>> (dev_test_1, dev_result, 10);
 	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaMemcpyDeviceToHost);
 	for (i=0; i<10; ++i) {
 		if (host_result[i] != host_acc_sum[i]) {
 			printf("error on accsum\n");
-			ret = 1;
+			ret = -1;
 			break;
 		}
 	}
 
-	element_mul <<<1, BLOCK_SIZE>>> (dev_test_1, dev_test_2, dev_result, 10);
+	element_mul <<<1, BLOCK_DIM>>> (dev_test_1, dev_test_2, dev_result, 10);
 	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaMemcpyDeviceToHost);
 	for (i=0; i<10; ++i) {
 		if (host_result[i] != host_mul[i]) {
 			printf("error on element_mul\n");
-			ret = 1;
+			ret = -1;
 			break;
 		}
 	}
 
-	sum <<<1, BLOCK_SIZE>>> (dev_test_1, dev_result, 10);
+	reduce_sum <<<1, BLOCK_DIM>>> (dev_test_1, dev_result, 10);
 	cudaMemcpy(host_result, dev_result, sizeof(host_result), cudaMemcpyDeviceToHost);
-	if (dev_result[0] != 55) {
+	if (host_result[0] != 55) {
 		printf("error on sum\n");
-		ret = 1;
+		ret = -1;
 	}
 
 	cudaFree(dev_test_1);
