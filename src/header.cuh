@@ -16,18 +16,18 @@ typedef struct {
 	NodeIdx to;
 } Edge;
 
-__global__
-void sort_by_dest(const Edge *in, Edge *out, size_t edge_size);
+__host__
+void sort_by_dest(const Edge *in, Edge *out, Edge *buffer, size_t edge_size);
 /**
  * 이 함수는 주어진 간선리스트 in을 src 기준으로 out에 정렬한다.
- * out은 in과 같은 크기로 할당되어야 하나, 초기화될 필요는 없다.
+ * out과 buffer는 in과 같은 크기로 할당되어야 하나, 초기화될 필요는 없다.
  */
 
-__global__
-void stable_sort_by_source(const Edge *in, Edge *out, size_t edge_size);
+__host__
+void stable_sort_by_source(const Edge *in, Edge *out, Edge *buffer, size_t edge_size);
 /**
  * 이 함수는 주어진 간선리스트 in을 dest 기준으로 out에 정렬한다.
- * out은 in과 같은 크기로 할당되어야 하나, 초기화될 필요는 없다.
+ * out과 buffer는 in과 같은 크기로 할당되어야 하나, 초기화될 필요는 없다.
  */
 
 __global__
@@ -69,6 +69,18 @@ void sum(const Count_t *in, Count_t *out, size_t node_size);
  * 병렬화를 위하여 out은 in과 동일한 크기일 필요가 있다.
  */
 
+
+__inline__ __device__
+int compare_src(const void *edge1, const void *edge2);
+/**
+ * 이 함수는 src만을 기준을 간선을 비교한다.
+ */
+
+__inline__ __device__
+int compare_dst(const void *edge1, const void *edge2);
+/**
+ * 이 함수는 dst만을 기준을 간선을 비교한다.
+ */
 
 __inline__ __device__
 size_t start_src_node_index_of_edge_list(
