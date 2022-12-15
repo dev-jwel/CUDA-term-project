@@ -40,7 +40,7 @@ void stable_sort_by_source(const Edge *in, Edge *out, Edge *buffer, size_t edge_
 __global__
 void count_in_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node_size);
 /**
- * 이 함수는 src 기준으로 정렬된 간선리스트 in에서 각 노드의 들어오는 차수를 out에 기록한다.
+ * 이 함수는 dst 기준으로 정렬된 간선리스트 in에서 각 노드의 들어오는 차수를 out에 기록한다.
  * in과 out의 길이는 각각 edge_size, node_size이다.
  * out은 초기화될 필요는 없다.
  */
@@ -48,7 +48,7 @@ void count_in_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node
 __global__
 void count_out_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node_size);
 /**
- * 이 함수는 dest 기준으로 정렬된 간선리스트 in에서 각 노드의 나가는 차수를 out에 기록한다.
+ * 이 함수는 src 기준으로 정렬된 간선리스트 in에서 각 노드의 나가는 차수를 out에 기록한다.
  * in과 out의 길이는 각각 edge_size, node_size이다.
  * out은 초기화될 필요는 없다.
  */
@@ -76,6 +76,21 @@ void sum(const Count_t *in, Count_t *out, size_t node_size);
  * 병렬화를 위하여 out은 in과 동일한 크기일 필요가 있다.
  */
 
+
+__device__
+size_t binary_search(
+	const void *array,
+	int (*compare) (const void *val1, const void *val2),
+	size_t element_size,
+	size_t array_size,
+	const void *target,
+	bool select_left
+);
+/**
+ * 이 함수는 주어진 정렬된 리스트에서 찾고자 하는 값을 찾는다.
+ * 중복된 값이 있으면 select_left에 따라 왼쪽 또는 오른쪽 끝의 위치를 반환한다.
+ * 검색하고자 하는 값이 없을 때는 인접한 값의 위치를 반환한다.
+ */
 
 __device__
 int compare_src(const void *edge1, const void *edge2);
