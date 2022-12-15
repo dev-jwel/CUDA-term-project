@@ -27,7 +27,7 @@ void element_mul(const Count_t *in1, const Count_t *in2, Count_t *out, size_t no
 }
 
 __global__
-void sum(const Count_t *in, Count_t *out, size_t node_size) {
+void reduce_sum(const Count_t *in, Count_t *out, size_t node_size) {
 	size_t tid = blockIdx.x * blockDim.x + threadIdx.x;
 	size_t buffer_size = node_size;
 
