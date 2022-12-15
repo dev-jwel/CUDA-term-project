@@ -2,7 +2,7 @@
 #include "device_functions.cuh"
 
 __global__
-void count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
+void _count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
 	size_t node_idx = blockIdx.x * blockDim.x + threadIdx.x;
 
     if (node_idx >= node_size) {
@@ -23,8 +23,13 @@ void count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_
     }
 }
 
+__host__
+void count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
+	_count_in_degree <<<GRID_DIM(node_size), BLOCK_DIM>>> (in, out, edge_size, node_size);
+}
+
 __global__
-void count_out_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
+void _count_out_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
 	size_t node_idx = blockIdx.x * blockDim.x + threadIdx.x;
 
     if (node_idx >= node_size) {
@@ -43,4 +48,9 @@ void count_out_degree(const Edge *in, size_t *out, size_t edge_size, size_t node
             in, compare_src, sizeof(Edge), edge_size, (void *) &target, true // left most result
         );
     }
+}
+
+__host__
+void count_out_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
+	_count_out_degree <<<GRID_DIM(node_size), BLOCK_DIM>>> (in, out, edge_size, node_size);
 }
