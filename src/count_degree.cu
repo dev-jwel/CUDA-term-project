@@ -13,8 +13,9 @@ void _count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node
 	size_t edge_idx = binary_search(
         in, compare_dst, sizeof(Edge), edge_size, (void *) &target, false // right most result
     );
+	
 
-    if (in[edge_idx].dst != node_idx) {
+    if (in[edge_idx-1].dst != node_idx) {
         out[node_idx] = 0;
     } else {
         out[node_idx] = edge_idx - binary_search(
@@ -43,7 +44,7 @@ void _count_out_degree(const Edge *in, size_t *out, size_t edge_size, size_t nod
         in, compare_src, sizeof(Edge), edge_size, (void *) &target, false // right most result
     );
 
-    if (in[edge_idx].src != node_idx) {
+    if (in[edge_idx-1].src != node_idx) {
         out[node_idx] = 0;
     } else {
         out[node_idx] = edge_idx - binary_search(
