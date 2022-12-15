@@ -8,10 +8,10 @@ bin:
 	mkdir -p bin
 
 bin/main: bin $(objects)
-	nvcc -o bin/main $(objects)
+	nvcc -g -G -o bin/main $(objects)
 
 bin/%.o: src/%.cu
-	nvcc -dc -c -o $@ $<
+	nvcc -g -G -dc -c -o $@ $<
 
 src/%.cu: $(headers)
 
