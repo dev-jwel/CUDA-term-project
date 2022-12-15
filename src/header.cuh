@@ -8,8 +8,8 @@
 #define BLOCK_SIZE 64
 #endif
 
-typedef unsigned int NodeIdx;
-typedef unsigned int Count_t;
+typedef size_t NodeIdx;
+typedef size_t Count_t;
 
 typedef struct {
 	NodeIdx from;
