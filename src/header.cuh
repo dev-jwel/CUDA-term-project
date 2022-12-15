@@ -5,8 +5,8 @@
 #include <time.h>
 #include <vector>
 
-#ifndef BLOCK_SIZE
-#define BLOCK_SIZE 64
+#ifndef BLOCK_DIM
+#define BLOCK_DIM 64
 #endif
 
 typedef size_t NodeIdx;
@@ -22,6 +22,10 @@ typedef struct {
 Edge *load_bitcoin_otc();
 
 vector<Edge> load_bitcoin_otc();
+
+
+__host__
+std::vector<Edge> load_bitcoin_otc();
 
 /**
  * 이 함수는 그래프 데이터를 메모리로 읽어들인다.
@@ -83,19 +87,19 @@ void sum(const Count_t *in, Count_t *out, size_t node_size);
  */
 
 
-__inline__ __device__
+__device__
 int compare_src(const void *edge1, const void *edge2);
 /**
  * 이 함수는 src만을 기준을 간선을 비교한다.
  */
 
-__inline__ __device__
+__device__
 int compare_dst(const void *edge1, const void *edge2);
 /**
  * 이 함수는 dst만을 기준을 간선을 비교한다.
  */
 
-__inline__ __device__
+__device__
 size_t start_src_node_index_of_edge_list(
 	const Edge *edges,
 	size_t edge_size,
@@ -105,8 +109,8 @@ size_t start_src_node_index_of_edge_list(
  * 이 함수는 src 기준 정렬된 간선리스트에서 주어진 노드의 시작 인덱스를 리턴한다.
  */
 
-__inline__ __device__
-size_t end_dst_node_index_of_edge_list(
+__device__
+size_t start_dst_node_index_of_edge_list(
 	const Edge *edges,
 	size_t edge_size,
 	NodeIdx idx
@@ -115,7 +119,7 @@ size_t end_dst_node_index_of_edge_list(
  * 이 함수는 dst 기준 정렬된 간선리스트에서 주어진 노드의 시작 인덱스를 리턴한다.
  */
 
-__inline__ __device__
+__device__
 NodeIdx start_node_of_candidates(
 	const Count_t *accumulated_num_candidates_by_node,
 	size_t node_size,
@@ -127,8 +131,8 @@ NodeIdx start_node_of_candidates(
  * 주어진 tid에 대응되는 시작 노드를 찾는다.
  */
 
-__inline__ __device__
-NodeIdx end_node_of_tid(
+__device__
+NodeIdx end_node_of_candidates(
 	const Count_t *accumulated_num_candidates_by_node,
 	size_t node_size,
 	size_t tid,
@@ -140,7 +144,7 @@ NodeIdx end_node_of_tid(
  * 마지막 노드의 인덱스에 1이 더해져 있음을 유의하자.
  */
 
-__inline__ __device__
+__device__
 bool has_pair(const Edge *fully_sorted_edge, Edge edge, size_t edge_size);
 /**
  * 이 함수는 주어진 간선이 정렬된 간선리스트에 존재하는지 확인한다.

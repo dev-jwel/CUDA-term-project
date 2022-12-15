@@ -1,4 +1,5 @@
 #!/bin/bash
+rm -rf data
 mkdir -p data
 pushd data
 wget https://snap.stanford.edu/data/soc-sign-bitcoinotc.csv.gz

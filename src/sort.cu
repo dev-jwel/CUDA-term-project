@@ -13,7 +13,7 @@ void merge(
 	
 	if (edge_size > 0) {
 		while(left_idx < middle && right_idx < edge_size) {
-			if (compare(in[left_idx], in[right_idx]) == 1) {
+			if (compare(&in[left_idx], &in[right_idx]) == 1) {
 				out[sorted_idx++] = in[right_idx++];
 			} else {
 				out[sorted_idx++] = in[left_idx++];
@@ -21,21 +21,17 @@ void merge(
 		}
 
 		while (left_idx < middle) {
-			buffer[sorted_idx++] = out[left_idx++];
+			out[sorted_idx++] = in[left_idx++];
 		}
 		while (right_idx < edge_size) {
-			buffer[sorted_idx++] = out[left_idx++];
-		}
-
-		for (sorted_idx=0; sorted_idx<edge_size; ++sorted_idx) {
-			out[sorted_idx] = buffer[sorted_idx];
+			out[sorted_idx++] = in[left_idx++];
 		}
 	}
 }
 
 __global__
 void merge_sort(
-	const Edge *in, const Edge *out,
+	const Edge *in, Edge *out,
 	int (*compare)(const void *edge1, const void *edge2),
 	size_t edge_size, size_t block_size
 ) {
@@ -65,11 +61,11 @@ void sort_by_dst(const Edge *in, Edge *out, Edge *buffer, size_t edge_size) {
 		block_size *= 2;
 
 		size_t GRID_DIM = edge_size / BLOCK_DIM;
-		if (edge_size % block_size > 0) {
+		if (edge_size % BLOCK_DIM > 0) {
 			GRID_DIM += 1;
 		}
 
-		merge_sort<<<GRID_DIM, BLOCK_DIM>>>(buffer, out, compare_dst, edge_size, block_size);
+		merge_sort <<<GRID_DIM, BLOCK_DIM>>> (buffer, out, compare_dst, edge_size, block_size);
 
 		temp = out;
 		out = buffer;
@@ -80,7 +76,7 @@ void sort_by_dst(const Edge *in, Edge *out, Edge *buffer, size_t edge_size) {
 }
 
 __host__
-void stable_sort_by_src(const Edge *in, Edge out, Edge *buffer, size_t edge_size) {
+void stable_sort_by_src(const Edge *in, Edge *out, Edge *buffer, size_t edge_size) {
 	Edge *temp;
 	size_t block_size = 1;
 	cudaMemcpy(buffer, in, sizeof(Edge) * edge_size, cudaMemcpyDeviceToDevice);
@@ -89,7 +85,7 @@ void stable_sort_by_src(const Edge *in, Edge out, Edge *buffer, size_t edge_size
 		block_size *= 2;
 
 		size_t GRID_DIM = edge_size / BLOCK_DIM;
-		if (edge_size % block_size > 0) {
+		if (edge_size % BLOCK_DIM > 0) {
 			GRID_DIM += 1;
 		}
 

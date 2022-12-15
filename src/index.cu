@@ -1,6 +1,6 @@
 #include "header.cuh"
 
-__inline__ __device__ size_t binary_search(
+__device__ size_t binary_search(
 	const void *array,
 	int (*compare) (const void *val1, const void *val2),
 	size_t element_size,
@@ -30,22 +30,21 @@ __inline__ __device__ size_t binary_search(
 	return min;
 }
 
-__inline__ __device__
+__device__
 int compare_src(const void *edge1, const void *edge2) {
 	if (((Edge *)edge1)->from < ((Edge *)edge2)->from) return -1;
 	if (((Edge *)edge1)->from > ((Edge *)edge2)->from) return 1;
 	return 0;
 }
 
-__inline__ __device__
+__device__
 int compare_dst(const void *edge1, const void *edge2) {
 	if (((Edge *)edge1)->to < ((Edge *)edge2)->to) return -1;
 	if (((Edge *)edge1)->to > ((Edge *)edge2)->to) return 1;
 	return 0;
 }
-
-__inline__ __device__
-int compare_edge(const void *edge1, const void edge2) {
+__device__
+int compare_edge(const void *edge1, const void *edge2) {
 	if (((Edge *)edge1)->from < ((Edge *)edge2)->from) return -1;
 	if (((Edge *)edge1)->from > ((Edge *)edge2)->from) return 1;
 	if (((Edge *)edge1)->to < ((Edge *)edge2)->to) return -1;
@@ -53,8 +52,8 @@ int compare_edge(const void *edge1, const void edge2) {
 	return 0;
 }
 
-__inline__ __device__
-int compare_count(const void *cnt1, const void cnt2) {
+__device__
+int compare_count(const void *cnt1, const void *cnt2) {
 	if (cnt1 < cnt2) {
 		return -1;
 	} else if (cnt1 > cnt2) {
@@ -64,7 +63,7 @@ int compare_count(const void *cnt1, const void cnt2) {
 	}
 }
 
-__inline__ __device__
+__device__
 size_t start_src_node_index_of_edge_list(
 	const Edge *edges,
 	size_t edge_size,
@@ -75,7 +74,7 @@ size_t start_src_node_index_of_edge_list(
 }
 
 
-__inline__ __device__
+__device__
 size_t start_dst_node_index_of_edge_list(
 	const Edge *edges,
 	size_t edge_size,
@@ -85,7 +84,7 @@ size_t start_dst_node_index_of_edge_list(
 	return binary_search(edges, compare_dst, sizeof(Edge), edge_size, (void *) &target, true);
 }
 
-__inline__ __device__
+__device__
 NodeIdx start_node_of_candidates(
 	const Count_t *accumulated_num_candidates_by_node,
 	size_t node_size,
@@ -100,7 +99,7 @@ NodeIdx start_node_of_candidates(
 	);
 }
 
-__inline__ __device__
+__device__
 NodeIdx end_node_of_candidates(
 	const Count_t *accumulated_num_candidates_by_node,
 	size_t node_size,
@@ -115,9 +114,9 @@ NodeIdx end_node_of_candidates(
 	);
 }
 
-__inline__ __device__
+__device__
 bool has_pair(const Edge *fully_sorted_edge, Edge edge, size_t edge_size) {
 	Edge target = edge;
 	size_t idx = binary_search(fully_sorted_edge, compare_edge, sizeof(Edge), edge_size, (void *) &target, true);
-	return compare_edge(fully_sorted_edge[idx], target) == 0;
+	return compare_edge((void *) &fully_sorted_edge[idx], (void *) &target) == 0;
 }
