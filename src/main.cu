@@ -2,11 +2,13 @@
 #include <vector>
 #include "header.cuh"
 
+using namespace std;
+
 int main(int argc, char *argv[]) {
 	srand(time(NULL));
 
 	size_t max_node_idx = 0;
-	Edge* edge_list = load_bitcoin_otc();
+	vector<Edge> edge_list = load_bitcoin_otc();
 
 	for (auto &edge : edge_list) {
 		if (edge.from > max_node_idx) {
