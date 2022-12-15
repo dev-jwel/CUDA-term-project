@@ -12,10 +12,10 @@ vector<Edge> load_bitcoin_otc() {
 	string delim = ",";
 	vector<Edge> edge_list;
 
-	while (get_line(ifs, line)) {
-		string src = line.substr(0, line.find(delim);
+	while (getline(ifs, line)) {
+		string src = line.substr(0, line.find(delim));
 		line.erase(0, line.find(delim)+1);
-		string dst = line.substr(0, line.find(delim);
+		string dst = line.substr(0, line.find(delim));
 		edge_list.push_back({stoi(src), stoi(dst)});
 	}
 
