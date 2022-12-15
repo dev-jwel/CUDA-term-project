@@ -2,7 +2,7 @@
 #include "device_functions.cuh"
 
 __global__
-void count_triangles(
+void _count_triangles(
 	const Edge *dst_sorted, const Edge *src_sorted,
 	const size_t *in_degree, const size_t *out_degree,
 	const size_t *accumulated_num_candidates_by_node,
@@ -81,4 +81,22 @@ void count_triangles(
 			counter[tid] += 1;
 		}
 	}
+}
+
+__host__
+void count_triangles(
+	const Edge *dst_sorted, const Edge *src_sorted,
+	const size_t *in_degree, const size_t *out_degree,
+	const size_t *accumulated_num_candidates_by_node,
+	size_t node_size, size_t edge_size,
+	size_t *counter
+) {
+	size_t num_all_candidates = accumulated_num_candidates_by_node[node_size-1];
+	_count_triangles <<<GRID_DIM(num_all_candidates), BLOCK_DIM>>> (
+		dst_sorted, src_sorted,
+		in_degree, out_degree,
+		accumulated_num_candidates_by_node,
+		node_size, edge_size,
+		counter
+	);
 }
