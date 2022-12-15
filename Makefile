@@ -1,4 +1,4 @@
-headers = $(wildcard src/*.cuh)
+headers = $(wildcard include/*.cuh)
 objects = $(patsubst src/%.cu, build/%.o, $(wildcard src/*.cu))
 tests = $(patsubst test/%.cu, build/test/%.o, $(wildcard test/*.cu))
 
@@ -20,10 +20,10 @@ build/test:
 	mkdir -p build/test
 
 build/%.o: src/%.cu
-	nvcc -g -G -dc -c -o $@ $<
+	nvcc -g -G -dc -c -I include -o $@ $<
 
 build/test/%.o: test/%.cu
-	nvcc -g -G -dc -c -I src -o $@ $<
+	nvcc -g -G -dc -c -I include -o $@ $<
 
 src/%.cu: $(headers)
 

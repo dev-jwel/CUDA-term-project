@@ -1,7 +1,8 @@
-#include "header.cuh"
+#include "def.cuh"
+#include "device_functions.cuh"
 
 __global__
-void count_in_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node_size) {
+void count_in_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
 	size_t node_idx = blockIdx.x * blockDim.x + threadIdx.x;
 
     if (node_idx >= node_size) {
@@ -13,7 +14,7 @@ void count_in_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node
         in, compare_dst, sizeof(Edge), edge_size, (void *) &target, false // right most result
     );
 
-    if (in[edge_idx].to != node_idx) {
+    if (in[edge_idx].dst != node_idx) {
         out[node_idx] = 0;
     } else {
         out[node_idx] = edge_idx - binary_search(
@@ -22,11 +23,14 @@ void count_in_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node
     }
 }
 
-__global__
+
 void count_out_degree(const Edge *in, Count_t *out, size_t edge_size, size_t node_size) {
 
 	// TODO
 
+
+
+void count_out_degree(const Edge *in, size_t *out, size_t edge_size, size_t node_size) {
 
 	size_t node_idx = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -39,11 +43,11 @@ void count_out_degree(const Edge *in, Count_t *out, size_t edge_size, size_t nod
         in, compare_src, sizeof(Edge), edge_size, (void *) &target, false // right most result
     );
 
-    if (in[edge_idx].from != node_idx) {
+    if (in[edge_idx].src != node_idx) {
         out[node_idx] = 0;
     } else {
         out[node_idx] = edge_idx - binary_search(
-            in, compare_dst, sizeof(Edge), edge_size, (void *) &target, true // left most result
+            in, compare_src, sizeof(Edge), edge_size, (void *) &target, true // left most result
         );
     }
 }
