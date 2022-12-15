@@ -7,7 +7,7 @@
 using namespace std;
 
 vector<Edge> load_bitcoin_otc() {
-	ifstream ifs("soc-sign-bitcoinotc.csv");
+	ifstream ifs("data/soc-sign-bitcoinotc.csv");
 	string line;
 	string delim = ",";
 	vector<Edge> edge_list;
