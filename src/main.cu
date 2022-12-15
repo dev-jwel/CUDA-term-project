@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	size_t host_result_in_degree[max_node_idx], host_result_out_degree[max_node_idx];
+	//size_t host_result_in_degree[max_node_idx], host_result_out_degree[max_node_idx];
 	size_t *dev_result_degree;
 
 	cudaMalloc((void **)&dev_dst, sizeof(Edge)*edge_size);
@@ -40,8 +40,8 @@ int main(int argc, char *argv[]) {
 	cudaMemcpy(dev_src, dev_dst_final, sizeof(Edge)*edge_size, cudaMemcpyDeviceToDevice);
 	stable_sort_by_src(dev_src, dev_src_final, buffer, edge_list.size());
 
-	//host_src_result = (Edge*)malloc(sizeof(Edge)*edge_size);
-	//cudaMemcpy(host_src_result, dev_result, sizeof(Edge)*edge_size, cudaMemcpyDeviceToHost);
+	host_src_result = (Edge*)malloc(sizeof(Edge)*edge_size);
+	cudaMemcpy(host_src_result, dev_result, sizeof(Edge)*edge_size, cudaMemcpyDeviceToHost);
 	// 위에까지 sort 함수
 
 	cudaMalloc((void **) &dev_result_degree, sizeof(host_result_in_degree));
@@ -53,6 +53,7 @@ int main(int argc, char *argv[]) {
 	//cudaMemcpy(host_result_out_degree, dev_result_degree, sizeof(host_result_out_degree), cudaMemcpyDeviceToHost);
 	//위에까지 count_degree 함수
 
+	
 	cout << "max_node_idx: " << max_node_idx << ", num_edge: " << edge_list.size() << endl;
     cout << "count: " << naive_counter(edge_list) << endl;
 
