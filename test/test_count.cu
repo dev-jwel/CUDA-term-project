@@ -13,8 +13,8 @@ int test_count() {
     Edge host_test_dst[10] = {
         {0, 1}, {3, 1}, {0, 2}, {9, 2}, {3, 6}, {1, 6}, {4, 6}, {8, 6}, {9, 8}, {1, 8}
     };
-	size_t host_in_degree[10] = {0,2,2,0,0,0,4,0,8,0};
-	size_t host_out_degree[10] = {3,0,0,2,0,0,2,0,0,2};
+	size_t host_in_degree[10] = {0,2,2,0,0,0,4,0,2,0};
+	size_t host_out_degree[10] = {3,0,0,2,0,0,3,0,0,2};
 	size_t host_result_degree[10];
 
     Edge *dev_test_src;
@@ -44,6 +44,7 @@ int test_count() {
 		for (int i=0; i<10; i++) {
 			printf("%d ", host_result_degree[i]);
 		}
+		printf("\n");
 	}
 
 	count_out_degree(dev_test_src, dev_result_degree, 10, 10);
@@ -62,6 +63,7 @@ int test_count() {
 		for (int i=0; i<10; i++) {
 			printf("%d ", host_result_degree[i]);
 		}
+		printf("\n");
 	}
 
 	cudaFree(dev_test_src);
