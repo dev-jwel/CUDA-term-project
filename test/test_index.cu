@@ -1,5 +1,7 @@
 #include <stdio.h>
-#include "header.cuh"
+#include "def.cuh"
+#include "device_functions.cuh"
+#include "host_functions.cuh"
 
 __device__
 int compare_int(const void *int1, const void *int2) {

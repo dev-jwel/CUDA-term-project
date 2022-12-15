@@ -1,4 +1,5 @@
-#include "header.cuh"
+#include "def.cuh"
+#include "device_functions.cuh"
 
 __inline__ __device__
 void merge(

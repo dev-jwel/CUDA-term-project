@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include "header.cuh"
+#include "def.cuh"
 
 using namespace std;
 

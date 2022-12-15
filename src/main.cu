@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include "header.cuh"
+#include "def.cuh"
+#include "host_functions.cuh"
 
 using namespace std;
 
@@ -11,11 +12,11 @@ int main(int argc, char *argv[]) {
 	vector<Edge> edge_list = load_bitcoin_otc();
 
 	for (auto &edge : edge_list) {
-		if (edge.from > max_node_idx) {
-			max_node_idx = edge.from;
+		if (edge.src > max_node_idx) {
+			max_node_idx = edge.src;
 		}
-		if (edge.to > max_node_idx) {
-			max_node_idx = edge.to;
+		if (edge.dst > max_node_idx) {
+			max_node_idx = edge.dst;
 		}
 	}
 

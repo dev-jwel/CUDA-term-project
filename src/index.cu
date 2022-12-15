@@ -1,4 +1,4 @@
-#include "header.cuh"
+#include "def.cuh"
 
 __device__ size_t binary_search(
 	const void *array,
@@ -32,23 +32,23 @@ __device__ size_t binary_search(
 
 __device__
 int compare_src(const void *edge1, const void *edge2) {
-	if (((Edge *)edge1)->from < ((Edge *)edge2)->from) return -1;
-	if (((Edge *)edge1)->from > ((Edge *)edge2)->from) return 1;
+	if (((Edge *)edge1)->src < ((Edge *)edge2)->src) return -1;
+	if (((Edge *)edge1)->src > ((Edge *)edge2)->src) return 1;
 	return 0;
 }
 
 __device__
 int compare_dst(const void *edge1, const void *edge2) {
-	if (((Edge *)edge1)->to < ((Edge *)edge2)->to) return -1;
-	if (((Edge *)edge1)->to > ((Edge *)edge2)->to) return 1;
+	if (((Edge *)edge1)->dst < ((Edge *)edge2)->dst) return -1;
+	if (((Edge *)edge1)->dst > ((Edge *)edge2)->dst) return 1;
 	return 0;
 }
 __device__
 int compare_edge(const void *edge1, const void *edge2) {
-	if (((Edge *)edge1)->from < ((Edge *)edge2)->from) return -1;
-	if (((Edge *)edge1)->from > ((Edge *)edge2)->from) return 1;
-	if (((Edge *)edge1)->to < ((Edge *)edge2)->to) return -1;
-	if (((Edge *)edge1)->to > ((Edge *)edge2)->to) return 1;
+	if (((Edge *)edge1)->src < ((Edge *)edge2)->src) return -1;
+	if (((Edge *)edge1)->src > ((Edge *)edge2)->src) return 1;
+	if (((Edge *)edge1)->dst < ((Edge *)edge2)->dst) return -1;
+	if (((Edge *)edge1)->dst > ((Edge *)edge2)->dst) return 1;
 	return 0;
 }
 
@@ -67,7 +67,7 @@ __device__
 size_t start_src_node_index_of_edge_list(
 	const Edge *edges,
 	size_t edge_size,
-	NodeIdx idx
+	size_t idx
 ) {
 	Edge target = {idx, 0};
 	return binary_search(edges, compare_src, sizeof(Edge), edge_size, (void *) &target, true);
@@ -78,39 +78,39 @@ __device__
 size_t start_dst_node_index_of_edge_list(
 	const Edge *edges,
 	size_t edge_size,
-	NodeIdx idx
+	size_t idx
 ) {
 	Edge target = {0, idx};
 	return binary_search(edges, compare_dst, sizeof(Edge), edge_size, (void *) &target, true);
 }
 
 __device__
-NodeIdx start_node_of_candidates(
-	const Count_t *accumulated_num_candidates_by_node,
+size_t start_node_of_candidates(
+	const size_t *accumulated_num_candidates_by_node,
 	size_t node_size,
 	size_t tid,
 	size_t num_threads
 ) {
-	Count_t num_all_candidates = accumulated_num_candidates_by_node[node_size-1];
-	Count_t target = tid * num_all_candidates / num_threads;
+	size_t num_all_candidates = accumulated_num_candidates_by_node[node_size-1];
+	size_t target = tid * num_all_candidates / num_threads;
 
 	return binary_search(
-		accumulated_num_candidates_by_node, compare_count, sizeof(Count_t), node_size, (void *) &target, true
+		accumulated_num_candidates_by_node, compare_count, sizeof(size_t), node_size, (void *) &target, true
 	);
 }
 
 __device__
-NodeIdx end_node_of_candidates(
-	const Count_t *accumulated_num_candidates_by_node,
+size_t end_node_of_candidates(
+	const size_t *accumulated_num_candidates_by_node,
 	size_t node_size,
 	size_t tid,
 	size_t num_threads
 ) {
-	Count_t num_all_candidates = accumulated_num_candidates_by_node[node_size-1];
-	Count_t target = (tid+1) * num_all_candidates / num_threads;
+	size_t num_all_candidates = accumulated_num_candidates_by_node[node_size-1];
+	size_t target = (tid+1) * num_all_candidates / num_threads;
 
 	return binary_search(
-		accumulated_num_candidates_by_node, compare_count, sizeof(Count_t), node_size, (void *) &target, false
+		accumulated_num_candidates_by_node, compare_count, sizeof(size_t), node_size, (void *) &target, false
 	);
 }
 
