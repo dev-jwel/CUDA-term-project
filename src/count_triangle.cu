@@ -10,21 +10,21 @@ void count_triangles(
 ) {
 	Edge edge;
 	size_t temp, num_candidates;
-
 	size_t tid = blockIdx.x * blockDim.x + threadIdx.x;
+    size_t num_all_candidates = accumulated_num_candidates_by_node[node_size-1];
 	
 	// split candidates by tid
 
-	size_t candidate_idx_start = tid * num_candidates_by_node / (gridDim.x * blockDim.x);
-	size_t candidate_idx_end = (tid+1) * num_candidates_by_node / (gridDim.x * blockDim.x);
+	size_t candidate_idx_start = tid * num_all_candidates / (gridDim.x * blockDim.x);
+	size_t candidate_idx_end = (tid+1) * num_all_candidates / (gridDim.x * blockDim.x);
 
 	// get start and end index by tid
 
 	NodeIdx node_idx_start = start_node_of_candidates(
-		accumulated_num_candidates_by_node, node_size, tid, num_threads
+		accumulated_num_candidates_by_node, node_size, tid, gridDim.x * blockDim.x
 	);
 	NodeIdx node_idx_end = end_node_of_candidates(
-		accumulated_num_candidates_by_node, node_size, tid, num_threads
+		accumulated_num_candidates_by_node, node_size, tid, gridDim.x * blockDim.x
 	);
 	size_t dst_idx = start_dst_node_index_of_edge_list(
 		dst_sorted, edge_size, node_idx_start
@@ -42,8 +42,8 @@ void count_triangles(
 		size_t dst_offset = temp / out_degree[node_idx_start];
 		size_t src_offset = temp % out_degree[node_idx_start];
 
-		edge.from = dst_sorted[dst_idx + dst_offset]->from;
-		edge.to = src_sorted[src_idx + src_offset]->to;
+		edge.from = dst_sorted[dst_idx + dst_offset].from;
+		edge.to = src_sorted[src_idx + src_offset].to;
 		if (has_pair(src_sorted, edge, edge_size)) {
 			counter[tid] += 1;
 		}
@@ -58,8 +58,8 @@ void count_triangles(
 			size_t dst_offset = temp / out_degree[node_idx];
 			size_t src_offset = temp % out_degree[node_idx];
 
-			edge.from = dst_sorted[dst_idx + dst_offset]->from;
-			edge.to = src_sorted[src_idx + src_offset]->to;
+			edge.from = dst_sorted[dst_idx + dst_offset].from;
+			edge.to = src_sorted[src_idx + src_offset].to;
 			if (has_pair(src_sorted, edge, edge_size)) {
 				counter[tid] += 1;
 			}
@@ -74,32 +74,10 @@ void count_triangles(
 		size_t dst_offset = temp / out_degree[node_idx_end];
 		size_t src_offset = temp % out_degree[node_idx_end];
 
-		edge.from = dst_sorted[dst_idx + dst_offset]->from;
-		edge.to = src_sorted[src_idx + src_offset]->to;
+		edge.from = dst_sorted[dst_idx + dst_offset].from;
+		edge.to = src_sorted[src_idx + src_offset].to;
 		if (has_pair(src_sorted, edge, edge_size)) {
 			counter[tid] += 1;
-		}
-	}
-
-}
-
-__inline__ __device__
-void count_triangles_in_single_node(
-	const Edge *dst_sorted, const Edge *src_sorted,
-	size_t dst_start, size_t dst_end,
-	size_t src_start, size_t src_end,
-	NodeIdx in_degree, NodeIdx out_degree,
-	NodeIdx node_idx, size_t edge_size,
-	Count_t *counter
-) {
-	Edge edge;
-	for (size_t dst_idx=dst_start; dst_idx < in_degree[node_idx]; ++dst_idx) {
-		for (size_t src_idx=src_start; src_idx < out_degree[node_idx]; ++src_idx) {
-			edge.from = dst_sorted[dst_idx]->from;
-			edge.to = src_sorted[src_idx]->to;
-			if (has_pair(src_sorted, edge, edge_size)) {
-				counter[tid] += 1;
-			}
 		}
 	}
 }

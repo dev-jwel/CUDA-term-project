@@ -11,7 +11,7 @@ bin/main: bin $(objects)
 	nvcc -o bin/main $(objects)
 
 bin/%.o: src/%.cu
-	nvcc -c -o $@ $<
+	nvcc -dc -c -o $@ $<
 
 src/%.cu: $(headers)
 
