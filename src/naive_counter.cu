@@ -1,7 +1,7 @@
-#include "header.cuh"
 #include <bits/stdc++.h>
 #include <vector>
 #include <iostream>
+#include "def.cuh"
 
 using namespace std;
 
@@ -11,11 +11,11 @@ size_t naive_counter(const vector<Edge> edges) {
     // assumes maximum index of node is number of nodes
     size_t num_node = 0;
     for (auto &edge : edges) {
-        if (edge.from > num_node) {
-            num_node = edge.from;
+        if (edge.src > num_node) {
+            num_node = edge.src;
         }
-        if (edge.to > num_node) {
-            num_node = edge.to;
+        if (edge.dst > num_node) {
+            num_node = edge.dst;
         }
     }
     num_node += 1;
@@ -25,7 +25,7 @@ size_t naive_counter(const vector<Edge> edges) {
     }
 
     for (auto &edge : edges) {
-        adj_list[edge.from].push_back(edge.to);
+        adj_list[edge.src].push_back(edge.dst);
     }
 
     size_t count = 0;

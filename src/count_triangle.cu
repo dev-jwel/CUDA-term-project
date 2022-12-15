@@ -1,12 +1,13 @@
-#include "header.cuh"
+#include "def.cuh"
+#include "device_functions.cuh"
 
 __global__
 void count_triangles(
 	const Edge *dst_sorted, const Edge *src_sorted,
-	const NodeIdx *in_degree, const NodeIdx *out_degree,
-	const Count_t *accumulated_num_candidates_by_node,
+	const size_t *in_degree, const size_t *out_degree,
+	const size_t *accumulated_num_candidates_by_node,
 	size_t node_size, size_t edge_size,
-	Count_t *counter
+	size_t *counter
 ) {
 	Edge edge;
 	size_t temp, num_candidates;
@@ -20,10 +21,10 @@ void count_triangles(
 
 	// get start and end index by tid
 
-	NodeIdx node_idx_start = start_node_of_candidates(
+	size_t node_idx_start = start_node_of_candidates(
 		accumulated_num_candidates_by_node, node_size, tid, gridDim.x * blockDim.x
 	);
-	NodeIdx node_idx_end = end_node_of_candidates(
+	size_t node_idx_end = end_node_of_candidates(
 		accumulated_num_candidates_by_node, node_size, tid, gridDim.x * blockDim.x
 	);
 	size_t dst_idx = start_dst_node_index_of_edge_list(
@@ -42,8 +43,8 @@ void count_triangles(
 		size_t dst_offset = temp / out_degree[node_idx_start];
 		size_t src_offset = temp % out_degree[node_idx_start];
 
-		edge.from = dst_sorted[dst_idx + dst_offset].from;
-		edge.to = src_sorted[src_idx + src_offset].to;
+		edge.src = dst_sorted[dst_idx + dst_offset].src;
+		edge.dst = src_sorted[src_idx + src_offset].dst;
 		if (has_pair(src_sorted, edge, edge_size)) {
 			counter[tid] += 1;
 		}
@@ -58,8 +59,8 @@ void count_triangles(
 			size_t dst_offset = temp / out_degree[node_idx];
 			size_t src_offset = temp % out_degree[node_idx];
 
-			edge.from = dst_sorted[dst_idx + dst_offset].from;
-			edge.to = src_sorted[src_idx + src_offset].to;
+			edge.src = dst_sorted[dst_idx + dst_offset].src;
+			edge.dst = src_sorted[src_idx + src_offset].dst;
 			if (has_pair(src_sorted, edge, edge_size)) {
 				counter[tid] += 1;
 			}
@@ -74,8 +75,8 @@ void count_triangles(
 		size_t dst_offset = temp / out_degree[node_idx_end];
 		size_t src_offset = temp % out_degree[node_idx_end];
 
-		edge.from = dst_sorted[dst_idx + dst_offset].from;
-		edge.to = src_sorted[src_idx + src_offset].to;
+		edge.src = dst_sorted[dst_idx + dst_offset].src;
+		edge.dst = src_sorted[src_idx + src_offset].dst;
 		if (has_pair(src_sorted, edge, edge_size)) {
 			counter[tid] += 1;
 		}
