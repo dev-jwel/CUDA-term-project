@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	cout << "max_node_idx: " << max_node_idx << ", num_edge: " << edge_list.size() << endl;
+    cout << "count: " << naive_counter(edge_list) << endl;
 
 
 	return 0;
