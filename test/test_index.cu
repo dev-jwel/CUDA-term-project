@@ -161,13 +161,13 @@ int test_index() {
     test_end_node <<<1, 1>>> (dev_test_cand, 10, 0, 2, 7, dev_result_int);
     CHECK_TEST_RESULT("error on end node without duplication");
 
-    test_has_pair <<<1, 1>>> (dev_test_src, 10, {9,1}, true, *dev_result_int);
+    test_has_pair <<<1, 1>>> (dev_test_src, 10, {9,1}, true, dev_result_int);
     CHECK_TEST_RESULT("error on end node with duplication");
 
-    test_has_pair <<<1, 1>>> (dev_test_src, 10, {9,1}, true, *dev_result_int);
+    test_has_pair <<<1, 1>>> (dev_test_src, 10, {9,1}, true, dev_result_int);
     CHECK_TEST_RESULT("error on has pair with existing pair");
 
-    test_has_pair <<<1, 1>>> (dev_test_src, 10, {5,1}, false, *dev_result_int);
+    test_has_pair <<<1, 1>>> (dev_test_src, 10, {5,1}, false, dev_result_int);
     CHECK_TEST_RESULT("error on has pair with not existing pair");
 
 	cudaFree(dev_test_int);
