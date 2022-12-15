@@ -11,14 +11,14 @@ std::vector<Edge> load_bitcoin_otc();
  */
 
 __host__
-void sort_by_dest(const Edge *in, Edge *out, Edge *buffer, size_t edge_size);
+void sort_by_dst(const Edge *in, Edge *out, Edge *buffer, size_t edge_size);
 /**
  * 이 함수는 주어진 간선리스트 in을 src 기준으로 out에 정렬한다.
  * out과 buffer는 in과 같은 크기로 할당되어야 하나, 초기화될 필요는 없다.
  */
 
 __host__
-void stable_sort_by_source(const Edge *in, Edge *out, Edge *buffer, size_t edge_size);
+void stable_sort_by_src(const Edge *in, Edge *out, Edge *buffer, size_t edge_size);
 /**
  * 이 함수는 주어진 간선리스트 in을 dest 기준으로 out에 정렬한다.
  * out과 buffer는 in과 같은 크기로 할당되어야 하나, 초기화될 필요는 없다.
