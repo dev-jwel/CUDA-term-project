@@ -155,7 +155,7 @@ int test_index() {
     test_start_node <<<1, 1>>> (dev_test_cand, 10, 1, 2, 8, dev_result_int);
     CHECK_TEST_RESULT("error on start node without duplication");
 
-    test_end_node <<<1, 1>>> (dev_test_cand, 10, 0, 11, 1, dev_result_int);
+    test_end_node <<<1, 1>>> (dev_test_cand, 10, 0, 11, 3, dev_result_int);
     CHECK_TEST_RESULT("error on end node with duplication");
 
     test_end_node <<<1, 1>>> (dev_test_cand, 10, 0, 2, 8, dev_result_int);
