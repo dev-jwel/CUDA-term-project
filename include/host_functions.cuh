@@ -83,4 +83,11 @@ size_t naive_counter(const std::vector<Edge> edges);
  * 이 함수는 무식하게 CPU만으로 삼각형의 개수를 센다.
  */
 
+__host__
+size_t cuda_counter(const std::vector<Edge> edges);
+/**
+ * 이 함수는 CUDA 디바이스로 삼각형을 빠르게 센다.
+ * 내부적으로 GPU 메모리 할당이 발생한다.
+ */
+
 #endif // _HOST_FUNCTIONS_CUH_

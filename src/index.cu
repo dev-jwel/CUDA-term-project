@@ -115,13 +115,13 @@ size_t end_node_of_candidates(
 	size_t num_threads
 ) {
 	size_t num_all_candidates = accumulated_num_candidates_by_node[node_size-1];
-	size_t target = (tid+1) * num_all_candidates / num_threads;
+	size_t target = (tid+1) * num_all_candidates / num_threads + 1;
 
 	size_t ret = binary_search(
 		accumulated_num_candidates_by_node, compare_count, sizeof(size_t), node_size, (void *) &target, true
 	);
 
-	if (accumulated_num_candidates_by_node[ret] != target) {
+	if (ret < node_size && accumulated_num_candidates_by_node[ret] != target) {
 		ret += 1;
 	}
 
