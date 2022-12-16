@@ -112,7 +112,7 @@ int test_index() {
     Edge host_test_dst[10] = {
         {0, 1}, {3, 1}, {0, 2}, {9, 2}, {3, 6}, {1, 6}, {4, 6}, {8, 6}, {9, 8}, {1, 8}
     };
-    size_t host_test_cand[10] = {0,1,6,6,6,7,23,45,66,66};
+    size_t host_test_cand[10] = {0,6,6,7,7,8,23,45,66,66};
 	int host_result_int[1];
 
 	int *dev_test_int;
@@ -149,16 +149,16 @@ int test_index() {
     test_start_dst <<<1, 1>>> (dev_test_dst, 10, 8, 8, dev_result_int);
     CHECK_TEST_RESULT("error on start dst");
 
-    test_start_node <<<1, 1>>> (dev_test_cand, 10, 1, 11, 2, dev_result_int);
+    test_start_node <<<1, 1>>> (dev_test_cand, 10, 1, 11, 3, dev_result_int);
     CHECK_TEST_RESULT("error on start node with duplication");
 
-    test_start_node <<<1, 1>>> (dev_test_cand, 10, 1, 2, 7, dev_result_int);
+    test_start_node <<<1, 1>>> (dev_test_cand, 10, 1, 2, 8, dev_result_int);
     CHECK_TEST_RESULT("error on start node without duplication");
 
-    test_end_node <<<1, 1>>> (dev_test_cand, 10, 0, 11, 5, dev_result_int);
+    test_end_node <<<1, 1>>> (dev_test_cand, 10, 0, 11, 1, dev_result_int);
     CHECK_TEST_RESULT("error on end node with duplication");
 
-    test_end_node <<<1, 1>>> (dev_test_cand, 10, 0, 2, 7, dev_result_int);
+    test_end_node <<<1, 1>>> (dev_test_cand, 10, 0, 2, 8, dev_result_int);
     CHECK_TEST_RESULT("error on end node without duplication");
 
     test_has_pair <<<1, 1>>> (dev_test_src, 10, {9,1}, true, dev_result_int);
