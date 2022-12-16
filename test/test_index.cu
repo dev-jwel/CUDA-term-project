@@ -132,7 +132,7 @@ int test_index() {
     cudaMemcpy(dev_test_dst, host_test_dst, sizeof(host_test_dst), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_test_cand, host_test_cand, sizeof(host_test_cand), cudaMemcpyHostToDevice);
 
-	test_binary_search <<<1, 1>>> (dev_test_int, 10, 6, 5, 8, dev_result_int);
+	test_binary_search <<<1, 1>>> (dev_test_int, 10, 6, 5, 7, dev_result_int);
 	cudaMemcpy(host_result_int, dev_result_int, sizeof(host_result_int), cudaMemcpyDeviceToHost);
 	if ((*host_result_int) & 1) {
         printf("error on left element selection\n");

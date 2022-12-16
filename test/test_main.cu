@@ -21,6 +21,7 @@ int main() {
     check(test_count, "test_count", &ret);
     check(test_sort, "test_sort", &ret);
     check(test_triangle, "test_triangle", &ret);
+	printf("Done!\n");
 
     return ret;
 }

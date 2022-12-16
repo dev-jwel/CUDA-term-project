@@ -11,24 +11,27 @@ size_t binary_search(
 	bool select_left
 ) {
 	size_t min = 0;
-	size_t max = array_size;
+	size_t max = array_size-1;
 	size_t mid;
+	bool update_min;
 
 	while (min < max) {
-		mid = (min + max) / 2;
-		switch (compare(array + element_size * mid, target)) {
-			case -1: min = mid + 1; break;
-			case  1: max = mid; break;
-			case  0:
-				if (select_left) {
-					max = mid;
-				} else {
-					min = mid + 1;
-				}
-			break;
+		if (select_left) {
+			mid = (min + max) / 2;
+			if (compare(array + element_size * mid, target) == -1) {
+				min = mid + 1;
+			} else {
+				max = mid;
+			}
+		} else {
+			mid = (min + max) / 2 + (min + max) % 2;
+			if (compare(array + element_size * mid, target) == 1) {
+				max = mid - 1;
+			} else {
+				min = mid;
+			}
 		}
 	}
-
 	return min;
 }
 
