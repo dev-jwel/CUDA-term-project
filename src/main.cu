@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
 
 	vector<Edge> edges = load_bitcoin_otc();
 
+	cout << "edge_size: " << edges.size() << endl;
+
 	gettimeofday(&cpu_start, NULL);
 	cpu_count = naive_counter(edges);
 	gettimeofday(&cpu_end, NULL);

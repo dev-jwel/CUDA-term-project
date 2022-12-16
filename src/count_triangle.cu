@@ -45,6 +45,10 @@ void _count_triangles(
 		src_sorted, edge_size, node_idx_start
 	);
 
+	printf(
+		"tid: %lu, line: %d, can_start: %lu, can_end: %lu, node_start: %lu, node_end: %lu, dst: %lu, src: %lu\n",
+		tid, __LINE__, candidate_idx_start, candidate_idx_end, node_idx_start, node_idx_end, dst_idx, src_idx
+	);
 
 	// handle when node range is 1
 
@@ -86,6 +90,9 @@ void _count_triangles(
 		}
 	}
 
+	dst_idx += in_degree[node_idx_start];
+	src_idx += out_degree[node_idx_start];
+
 	// candidates of all nodes except first and last one
 
 	for (size_t node_idx=node_idx_start+1; node_idx < node_idx_end; ++node_idx) {
@@ -101,6 +108,9 @@ void _count_triangles(
 				counter[tid] += 1;
 			}
 		}
+
+		dst_idx += in_degree[node_idx];
+		src_idx += out_degree[node_idx];
 	}
 
 	// candidates of last node
