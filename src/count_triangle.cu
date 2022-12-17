@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include "def.cuh"
 #include "device_functions.cuh"
 
@@ -43,11 +42,6 @@ void _count_triangles(
 	);
 	size_t src_idx = start_src_node_index_of_edge_list(
 		src_sorted, edge_size, node_idx_start
-	);
-
-	printf(
-		"tid: %lu, line: %d, can_start: %lu, can_end: %lu, node_start: %lu, node_end: %lu, dst: %lu, src: %lu\n",
-		tid, __LINE__, candidate_idx_start, candidate_idx_end, node_idx_start, node_idx_end, dst_idx, src_idx
 	);
 
 	// handle when node range is 1

@@ -1,8 +1,6 @@
 #include "def.cuh"
 #include "device_functions.cuh"
 
-#include <stdio.h>
-
 __inline__ __device__
 void merge(
 	const Edge *in, Edge *out,
@@ -55,13 +53,6 @@ void merge_sort(
 			tid == max_tid-1 ? edge_size - tid * block_size : block_size,
 			is_key_src
 		);
-		/*
-		if (tid == max_tid-1) {
-			merge(&in[tid * block_size], &out[tid * block_size], block_size/2, edge_size - tid * block_size);
-		} else {
-			merge(&in[tid * block_size], &out[tid * block_size], block_size/2, block_size);
-		}
-		*/
 	}
 }
 
@@ -70,12 +61,7 @@ void sort_by_dst(const Edge *in, Edge *out, Edge *buffer, size_t edge_size) {
 	Edge *temp;
 	size_t block_size = 1;
 
-	Edge *debug = (Edge *) malloc(sizeof(Edge) * edge_size);
-
 	cudaMemcpy(buffer, in, sizeof(Edge) * edge_size, cudaMemcpyDeviceToDevice);
-
-	cudaMemcpy(debug, buffer, sizeof(Edge) * edge_size, cudaMemcpyDeviceToHost);
-
 
 	while (block_size < edge_size) {
 		block_size *= 2;
@@ -85,8 +71,6 @@ void sort_by_dst(const Edge *in, Edge *out, Edge *buffer, size_t edge_size) {
 		buffer = temp;
 	}
 
-	free(debug);
-	
 	cudaMemcpy(out, buffer, sizeof(Edge) * edge_size, cudaMemcpyDeviceToDevice);
 }
 

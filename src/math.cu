@@ -1,5 +1,4 @@
 #include "def.cuh"
-
 #include <iostream>
 #include <stdlib.h>
 

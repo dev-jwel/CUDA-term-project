@@ -1,5 +1,4 @@
 #include "def.cuh"
-#include <stdio.h>
 
 __device__
 size_t binary_search(
