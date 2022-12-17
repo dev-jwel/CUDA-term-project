@@ -1,7 +1,7 @@
-#include <iostream>
-#include <vector>
 #include "def.cuh"
 #include "host_functions.cuh"
+#include <iostream>
+#include <vector>
 #include <sys/time.h>
 
 using namespace std;
